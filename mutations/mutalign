@@ -8,7 +8,7 @@ import os.path
 from optparse import OptionParser
 
 def main( options ):
-    align( options.query_fasta, options.subject_fasta, options.check_ambig )
+    align( options.query_fasta, options.subject_fasta, options.ignore_ambig )
 
 def check_options( options ):
     if options.query_fasta and options.subject_fasta:
@@ -19,7 +19,7 @@ def get_options( ):
     o = OptionParser()
     o.add_option( '--query', dest='query_fasta', help='Query fasta file' )
     o.add_option( '--subject', dest='subject_fasta', help='Subject fasta file that has only 1 sequence to align all the query sequences against. Most likely a reference gene fasta file.' )
-    o.add_option( '--check-ambiguous', dest='check_ambig', action='store_true', default=False, help='Whether or not ambiguous bases should be compared or not[Default: They are compared]' )
+    o.add_option( '--skip-ambiguous', dest='ignore_ambig', action='store_false', default=True, help='Specify this option to skip ambiguous bases so they are not counted' )
     options, args = o.parse_args()
 
     if not check_options( options ):

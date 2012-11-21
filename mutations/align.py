@@ -11,7 +11,7 @@ from subprocess import Popen, PIPE, STDOUT
 import sys
 
 # Wether or not ambiguous bases should be called different or not
-check_ambig = False
+ignore_ambig = True
 
 def run_blast( seq, subject_fasta ):
     cline = blast( cmd='blastn', subject=subject_fasta, gapopen=5, gapextend=2, reward=1, penalty=-2, outfmt=5 )#, out='blastoutput.xml' ) #outfmt="6 qseqid sseqid evalue slen mismatch" )#, out='wrair2368t_pb2.xml' )
@@ -76,7 +76,8 @@ def get_muts( sub_align, query_align ):
     count = 1
     for q,s in zip( query_align, sub_align ):
         tmp = "Q: %s S: %s Pos: %s" % (q, s, count) 
-        if check_ambig and (is_ambig( q ) or is_ambig( s )):
+        
+        if not ignore_ambig and (is_ambig( q ) or is_ambig( s )):
             sys.stderr.write( "Skipping ambiguous base\n" )
             sys.stderr.write( tmp + "\n" )
         elif q != s:
@@ -94,10 +95,10 @@ def count_seqs( file_name ):
 
     return total_seq
 
-def align( query_fasta, subject_fasta, ca ):
-    global check_ambig
-    check_ambig = ca
-    sys.stderr.write( "Setting check_ambig to %s" % check_ambig )
+def align( query_fasta, subject_fasta, ignore_ambiguous ):
+    global ignore_ambig
+    ignore_ambig = ignore_ambiguous
+    sys.stderr.write( "Setting ignore_ambig to %s\n" % ignore_ambig )
 
     refp = SeqIO.parse( subject_fasta, 'fasta' )
     ref = refp.next()

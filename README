@@ -2,3 +2,24 @@ MutationCount
 =============
 
 Count Mutations between a reference sequence and aligned sequences
+
+Based on a given reference(--subject) sequence file, align all query sequences to that subject
+and count the differences in the alignment.
+
+Blastn seems to be the fastest way to do these quick alignments so it is attempted first. If it fails
+then t_coffee is used.
+
+Installation
+============
+
+Clone this repo and run
+python setup.py install
+
+Requirements
+============
+
+Requirements should be automatically fetched, but you may manually install them
+as well
+
+Biopython
+numpy

@@ -76,3 +76,26 @@ def count_seqs( file_name ):
 
     return total_seq
 
+def align( query_fasta, subject_fasta ):
+    refp = SeqIO.parse( subject_fasta, 'fasta' )
+    ref = refp.next()
+
+    fhq = SeqIO.parse( query_fasta, 'fasta' )
+
+    total_seq = count_seqs( query_fasta )
+
+    tcount = 1
+    for seq in fhq:
+        mutations = []
+        sys.stderr.write( "Gathering mutations for sequence %s of %s\n" % (tcount, total_seq) )
+
+        mutations, r1 = run_blast( seq, subject_fasta )
+        if r1 == -1:
+            sys.stderr.write( "%s failed to blast falling back to tcoffee. Blast output:\n%s" % (seq.id,o1) )
+            mutations, r2 = tcoffee_align( ref, seq )
+            if r2 == -1:
+                sys.stderr.write( "%s failed to align with tcoffee as well. Tcoffee output:\n%s" % (seq.id,o2) )
+        print "%s: Total mutations: %s" % (seq.description, len( mutations ))
+        for m in mutations:
+            print m
+        tcount += 1

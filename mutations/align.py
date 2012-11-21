@@ -1,11 +1,17 @@
+# Biopython imports
 from Bio.Blast.Applications import NcbiblastnCommandline as blast
 from Bio.Blast import NCBIXML
 from Bio import SeqIO, pairwise2
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
+from Bio.Alphabet.IUPAC import IUPACUnambiguousDNA
+
 from StringIO import StringIO
 from subprocess import Popen, PIPE, STDOUT
 import sys
+
+# Wether or not ambiguous bases should be called different or not
+check_ambig = False
 
 def run_blast( seq, subject_fasta ):
     cline = blast( cmd='blastn', subject=subject_fasta, gapopen=5, gapextend=2, reward=1, penalty=-2, outfmt=5 )#, out='blastoutput.xml' ) #outfmt="6 qseqid sseqid evalue slen mismatch" )#, out='wrair2368t_pb2.xml' )
@@ -59,12 +65,22 @@ def tcoffee_align( seq1, seq2 ):
 
     return (mutations,1)
 
+def is_ambig( base ):
+    """
+        If a given base is ambiguous or not
+    """
+    return base.upper() not in IUPACUnambiguousDNA.letters
+
 def get_muts( sub_align, query_align ):
     mutations = []
     count = 1
     for q,s in zip( query_align, sub_align ):
-        if q != s:
-            mutations.append( "Q: %s S: %s Pos: %s" % (q, s, count) )
+        tmp = "Q: %s S: %s Pos: %s" % (q, s, count) 
+        if check_ambig and (is_ambig( q ) or is_ambig( s )):
+            sys.stderr.write( "Skipping ambiguous base\n" )
+            sys.stderr.write( tmp + "\n" )
+        elif q != s:
+            mutations.append( tmp )
         count += 1
     return mutations
 
@@ -78,7 +94,11 @@ def count_seqs( file_name ):
 
     return total_seq
 
-def align( query_fasta, subject_fasta ):
+def align( query_fasta, subject_fasta, ca ):
+    global check_ambig
+    check_ambig = ca
+    sys.stderr.write( "Setting check_ambig to %s" % check_ambig )
+
     refp = SeqIO.parse( subject_fasta, 'fasta' )
     ref = refp.next()
 

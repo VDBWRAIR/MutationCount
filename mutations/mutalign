@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+from align import run_blast, parse_blast, tcoffee_align, get_muts, count_seqs
+
+from optparse import OptionParser
+
+def main( options ):
+    query_fasta = options.query_fasta
+    subject_fasta = options.subject_fasta
+
+    refp = SeqIO.parse( subject_fasta, 'fasta' )
+    ref = refp.next()
+
+    fhq = SeqIO.parse( query_fasta, 'fasta' )
+
+    total_seq = count_seqs( query_fasta )
+
+    tcount = 1
+    for seq in fhq:
+        mutations = []
+        sys.stderr.write( "Gathering mutations for sequence %s of %s\n" % (tcount, total_seq) )
+
+        mutations, r1 = run_blast( seq, subject_fasta )
+        if r1 == -1:
+            sys.stderr.write( "%s failed to blast falling back to tcoffee. Blast output:\n%s" % (seq.id,o1) )
+            mutations, r2 = tcoffee_align( ref, seq )
+            if r2 == -1:
+                sys.stderr.write( "%s failed to align with tcoffee as well. Tcoffee output:\n%s" % (seq.id,o2) )
+        print "%s: Total mutations: %s" % (seq.description, len( mutations ))
+        for m in mutations:
+            print m
+        tcount += 1
+
+def check_options( options ):
+    if options.query_fasta and options.subject_fasta:
+        return True
+    return False
+
+def get_options( ):
+    o = OptionParser()
+    o.add_option( '--query', dest='query_fasta', help='Query fasta file' )
+    o.add_option( '--subject', dest='subject_fasta', help='Subject fasta file that has only 1 sequence to align all the query sequences against. Most likely a reference gene fasta file.' )
+    options, args = o.parse_args()
+
+    if not check_options( options ):
+        o.print_help()
+        sys.exit( -1 )
+
+    return options
+
+if __name__ == '__main__':
+    options = get_options()
+    main( options )

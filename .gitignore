@@ -37,3 +37,6 @@ nosetests.xml
 
 # Sample Data
 sample_data/
+
+# Test Install Virtualenv
+testinstall/

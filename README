@@ -12,10 +12,25 @@ then t_coffee is used.
 Installation
 ============
 
+LINUX
+=====
+
+Open a terminal and use one of the following methods(Each line is a command you run in the terminal)
+
+Clone and install
+=================
 git clone https://github.com/VDBWRAIR/MutationCount.git
 cd MutationCount
 python setup.py install
 
+If you don't have git
+=====================
+pushd /tmp
+wget https://github.com/VDBWRAIR/MutationCount/archive/master.zip -O MutationCount.zip
+unzip MutationCount.zip
+cd MutationCount-master
+python setup.py install
+popd
 
 Requirements
 ============

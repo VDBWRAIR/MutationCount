@@ -7,11 +7,13 @@ from StringIO import StringIO
 from subprocess import Popen, PIPE, STDOUT
 import sys
 
-blastn_path = '/home/EIDRUdata/programs/blast+/bin/blastn'
-
 def run_blast( seq, subject_fasta ):
-    cline = blast( cmd=blastn_path, subject=subject_fasta, gapopen=5, gapextend=2, reward=1, penalty=-2, outfmt=5 )#, out='blastoutput.xml' ) #outfmt="6 qseqid sseqid evalue slen mismatch" )#, out='wrair2368t_pb2.xml' )
-    p = Popen( str(cline).split(), stdout=PIPE, stdin=PIPE, stderr=STDOUT )
+    cline = blast( cmd='blastn', subject=subject_fasta, gapopen=5, gapextend=2, reward=1, penalty=-2, outfmt=5 )#, out='blastoutput.xml' ) #outfmt="6 qseqid sseqid evalue slen mismatch" )#, out='wrair2368t_pb2.xml' )
+    try:
+        p = Popen( str(cline).split(), stdout=PIPE, stdin=PIPE, stderr=STDOUT )
+    except OSError:
+        print "Please ensure blastn is installed and in your PATH"
+        sys.exit( 1 )
     stdeo, stdin = p.communicate( input=seq.format( 'fasta' ) )
 
     return parse_blast( seq, stdeo )

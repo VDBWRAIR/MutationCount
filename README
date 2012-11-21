@@ -12,13 +12,26 @@ then t_coffee is used.
 Installation
 ============
 
-Clone this repo and run
+git clone https://github.com/VDBWRAIR/MutationCount.git
+cd MutationCount
 python setup.py install
+
 
 Requirements
 ============
 
-Requirements should be automatically fetched, but you may manually install them
+Blast+
+======
+
+You need to install the Blast+ package
+http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download
+After it is installed you will need to ensure that blastn is included in your environment's path
+
+
+Python Packages
+===============
+
+Python Requirements should be automatically fetched, but you may manually install them
 as well
 
 Biopython

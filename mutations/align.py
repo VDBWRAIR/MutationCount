@@ -98,7 +98,8 @@ def count_seqs( file_name ):
 def align( query_fasta, subject_fasta, ignore_ambiguous ):
     global ignore_ambig
     ignore_ambig = ignore_ambiguous
-    sys.stderr.write( "Setting ignore_ambig to %s\n" % ignore_ambig )
+    if not ignore_ambig:
+        sys.stderr.write( "Ignoring ambiguous bases" )
 
     refp = SeqIO.parse( subject_fasta, 'fasta' )
     ref = refp.next()

@@ -24,8 +24,8 @@ setup(
         ('bin', ['mutations/ext/bin/t_coffee']),
     ],
     install_requires = [
-        "numpy ==1.6",
-        "biopython ==1.59"
+        "numpy >=1.6",
+        "biopython >=1.59"
     ],
     long_description=read('README'),
 )

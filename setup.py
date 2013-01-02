@@ -8,18 +8,26 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+def scripts( ):
+    return [os.path.join( 'bin', f ) for f in os.listdir( 'bin' )]
+
+# The next three lines are modified from Biopython
+__version__ = "Undefined"
+for line in open('mutations/__init__.py'):
+    if (line.startswith('__version__')):
+        exec(line.strip())
+        break
+
 setup(
     name = "mutation_counts",
-    version = "0.0.1",
+    version = __version__,
     author = "Tyghe Vallard",
     author_email = "vallardt@gmail.com",
     description = ("Count mutations between a reference and batch of sequences"),
     keywords = "biopython mutations count t_coffee",
     url = "https://github.com/VDBWRAIR/MutationCount",
     packages = ['mutations'],
-    scripts = [
-        'mutations/mutalign',
-    ],
+    scripts = scripts(),
     data_files = [
         ('bin', ['mutations/ext/bin/t_coffee']),
     ],

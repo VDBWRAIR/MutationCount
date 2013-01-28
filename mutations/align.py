@@ -27,7 +27,15 @@ def run_blast( seq, subject_fasta ):
 def parse_blast( seq, output ):
     blast_output = StringIO( output )
 
-    blast_records = NCBIXML.read( blast_output )
+    try:
+        blast_records = NCBIXML.read( blast_output )
+    except ValueError as e:
+        sys.stderr.write( "-----Blast output------" )
+        sys.stderr.write( blast_output.getvalue() )
+        if blast_output.getvalue() == "BLAST engine error: XML formatting is only supported for a database search":
+            sys.stderr.write( "Please ensure that you are using the latest blastx version of blastn" )
+            sys.stderr.write( "You may need to update your environment's PATH variable" )
+        raise e
 
     try:
         alignment = blast_records.alignments[0]

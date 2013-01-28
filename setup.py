@@ -28,9 +28,6 @@ setup(
     url = "https://github.com/VDBWRAIR/MutationCount",
     packages = ['mutations'],
     scripts = scripts(),
-    data_files = [
-        ('bin', ['mutations/ext/bin/t_coffee']),
-    ],
     install_requires = [
         "numpy >=1.6",
         "biopython >=1.59"

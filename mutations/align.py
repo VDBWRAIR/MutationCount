@@ -49,7 +49,7 @@ def tcoffee_align( seq1, seq2 ):
     seqs = StringIO()
     seqs.write( seq1.format( 'fasta' ) )
     seqs.write( seq2.format( 'fasta' ) )
-    cmd = "t_coffee -in stdin -output fasta -outfile stdout -quiet" % tcoffee_path
+    cmd = "t_coffee -in stdin -output fasta -outfile stdout -quiet"
     p = Popen( cmd.split(), stdout=PIPE, stdin=PIPE, stderr=STDOUT )
     stdeo, stdin = p.communicate( input = seqs.getvalue() )
     s = StringIO( stdeo )
@@ -115,10 +115,10 @@ def align( query_fasta, subject_fasta, ignore_ambiguous ):
 
         mutations, r1 = run_blast( seq, subject_fasta )
         if r1 == -1:
-            sys.stderr.write( "%s failed to blast falling back to tcoffee. Blast output:\n%s" % (seq.id,o1) )
+            sys.stderr.write( "%s failed to blast falling back to tcoffee. Blast output:\n%s" % (seq.id,r1) )
             mutations, r2 = tcoffee_align( ref, seq )
             if r2 == -1:
-                sys.stderr.write( "%s failed to align with tcoffee as well. Tcoffee output:\n%s" % (seq.id,o2) )
+                sys.stderr.write( "%s failed to align with tcoffee as well. Tcoffee output:\n%s" % (seq.id,r2) )
         print "%s: Total mutations: %s" % (seq.description, len( mutations ))
         for m in mutations:
             print m

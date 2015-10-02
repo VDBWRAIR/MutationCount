@@ -12,8 +12,8 @@ then t_coffee is used.
 Usage
 =====
 
-* sample_data/2012_11_13/H1N1/README
-* sample_data/2012_11_13/H3N2/README
+* [Example 1](sample_data/2012_11_13/H1N1/README.md)
+* [Example 2](sample_data/2012_11_13/H3N2/README.md)
 
 Installation
 ============

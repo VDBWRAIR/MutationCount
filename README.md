@@ -12,7 +12,8 @@ then t_coffee is used.
 Usage
 =====
 
-comming soon! For now, rely on your command line ninja skills
+* sample_data/2012_11_13/H1N1/README
+* sample_data/2012_11_13/H3N2/README
 
 Installation
 ============
@@ -24,18 +25,24 @@ Open a terminal and use one of the following methods(Each line is a command you 
 
 Clone and install
 =================
+
+```
 git clone https://github.com/VDBWRAIR/MutationCount.git
 cd MutationCount
 python setup.py install
+```
 
 If you don't have git
 =====================
+
+```
 pushd /tmp
 wget https://github.com/VDBWRAIR/MutationCount/archive/master.zip -O MutationCount.zip
 unzip MutationCount.zip
 cd MutationCount-master
 python setup.py install
 popd
+```
 
 Requirements
 ============
